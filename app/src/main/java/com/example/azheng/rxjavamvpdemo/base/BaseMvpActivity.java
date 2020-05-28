@@ -1,12 +1,12 @@
 package com.example.azheng.rxjavamvpdemo.base;
 
-import android.arch.lifecycle.Lifecycle;
+import androidx.lifecycle.Lifecycle;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
-import com.uber.autodispose.AutoDispose;
-import com.uber.autodispose.AutoDisposeConverter;
-import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider;
+import autodispose2.AutoDispose;
+import autodispose2.AutoDisposeConverter;
+import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider;
 
 /**
  * @author azheng
@@ -31,6 +31,7 @@ public abstract class BaseMvpActivity<T extends BasePresenter> extends BaseActiv
         if (mPresenter != null) {
             mPresenter.detachView();
         }
+
         super.onDestroy();
     }
 

@@ -1,7 +1,9 @@
 package com.example.azheng.rxjavamvpdemo.net;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
+import com.example.azheng.rxjavamvpdemo.BuildConfig;
 
 import java.io.IOException;
 
@@ -11,7 +13,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -25,7 +27,9 @@ public class RetrofitClient {
 
     private static volatile RetrofitClient instance;
     private APIService apiService;
-    private String baseUrl = "http://www.wanandroid.com/";
+    private String baseUrl = "https://www.wanandroid.com";
+    private Retrofit retrofit;
+    private OkHttpClient okHttpClient;
 
     private RetrofitClient() {
     }
@@ -51,9 +55,9 @@ public class RetrofitClient {
             @Override
             public Response intercept(@NonNull Chain chain) throws IOException {
                 Request original = chain.request();
-                Request.Builder requestBuilder = original.newBuilder()
-                        //添加Token
-                        .header("token", "");
+                Request.Builder requestBuilder = original.newBuilder();
+                //添加Token
+//                        .header("token", "");
                 Request request = requestBuilder.build();
                 return chain.proceed(request);
             }
@@ -62,7 +66,7 @@ public class RetrofitClient {
     }
 
     /**
-     * 设置拦截器
+     * 设置拦截器 打印日志
      *
      * @return
      */
@@ -75,24 +79,42 @@ public class RetrofitClient {
         return interceptor;
     }
 
+    public OkHttpClient getOkHttpClient() {
+        if (okHttpClient == null) {
+            //如果为DEBUG 就打印日志
+            if (BuildConfig.DEBUG) {
+                okHttpClient = new OkHttpClient().newBuilder()
+                        //设置Header
+                        .addInterceptor(getHeaderInterceptor())
+                        //设置拦截器
+                        .addInterceptor(getInterceptor())
+                        .build();
+            } else {
+                okHttpClient = new OkHttpClient().newBuilder()
+                        //设置Header
+                        .addInterceptor(getHeaderInterceptor())
+                        .build();
+            }
+
+        }
+
+
+        return okHttpClient;
+    }
+
     public APIService getApi() {
         //初始化一个client,不然retrofit会自己默认添加一个
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                //设置Header
-                .addInterceptor(getHeaderInterceptor())
-                //设置拦截器
-                .addInterceptor(getInterceptor())
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
-                //设置网络请求的Url地址
-                .baseUrl(baseUrl)
-                //设置数据解析器
-                .addConverterFactory(GsonConverterFactory.create())
-                //设置网络请求适配器，使其支持RxJava与RxAndroid
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+        if (retrofit == null) {
+            retrofit = new Retrofit.Builder()
+                    .client(getOkHttpClient())
+                    //设置网络请求的Url地址
+                    .baseUrl(baseUrl)
+                    //设置数据解析器
+                    .addConverterFactory(GsonConverterFactory.create())
+                    //设置网络请求适配器，使其支持RxJava与RxAndroid
+                    .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                    .build();
+        }
         //创建—— 网络请求接口—— 实例
         apiService = retrofit.create(APIService.class);
         return apiService;

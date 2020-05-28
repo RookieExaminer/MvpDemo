@@ -4,7 +4,7 @@ import com.example.azheng.rxjavamvpdemo.base.BaseView;
 import com.example.azheng.rxjavamvpdemo.bean.BaseObjectBean;
 import com.example.azheng.rxjavamvpdemo.bean.LoginBean;
 
-import io.reactivex.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 
 
 /**
@@ -16,7 +16,7 @@ import io.reactivex.Flowable;
  */
 public interface MainContract {
     interface Model {
-        Flowable<BaseObjectBean<LoginBean>> login(String username, String password);
+        Observable<BaseObjectBean<LoginBean>> login(String username, String password);
     }
 
     interface View extends BaseView {
@@ -27,7 +27,7 @@ public interface MainContract {
         void hideLoading();
 
         @Override
-        void onError(Throwable throwable);
+        void onError(String errMessage);
 
         void onSuccess(BaseObjectBean<LoginBean> bean);
     }

@@ -7,7 +7,10 @@ import com.example.azheng.rxjavamvpdemo.contract.MainContract;
 import com.example.azheng.rxjavamvpdemo.model.MainModel;
 import com.example.azheng.rxjavamvpdemo.net.RxScheduler;
 
-import io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+
 
 /**
  * @author azheng
@@ -32,20 +35,31 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
         }
         mView.showLoading();
         model.login(username, password)
-                .compose(RxScheduler.<BaseObjectBean<LoginBean>>Flo_io_main())
-                .as(mView.<BaseObjectBean<LoginBean>>bindAutoDispose())
-                .subscribe(new Consumer<BaseObjectBean<LoginBean>>() {
+                .compose(RxScheduler.Obs_io_main())
+                .to(mView.bindAutoDispose())//解决内存泄漏
+                .subscribe(new Observer<BaseObjectBean<LoginBean>>() {
                     @Override
-                    public void accept(BaseObjectBean<LoginBean> bean) throws Exception {
-                        mView.onSuccess(bean);
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull BaseObjectBean<LoginBean> loginBeanBaseObjectBean) {
+                        mView.onSuccess(loginBeanBaseObjectBean);
                         mView.hideLoading();
                     }
-                }, new Consumer<Throwable>() {
+
                     @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        mView.onError(throwable);
+                    public void onError(@NonNull Throwable e) {
+                        mView.onError(e.getMessage());
                         mView.hideLoading();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
+
     }
 }

@@ -4,10 +4,11 @@ package com.example.azheng.rxjavamvpdemo.net;
 import com.example.azheng.rxjavamvpdemo.bean.BaseObjectBean;
 import com.example.azheng.rxjavamvpdemo.bean.LoginBean;
 
-import io.reactivex.Flowable;
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
+
 
 /**
  * @author azheng
@@ -27,7 +28,7 @@ public interface APIService {
      */
     @FormUrlEncoded
     @POST("user/login")
-    Flowable<BaseObjectBean<LoginBean>> login(@Field("username") String username,
-                                              @Field("password") String password);
+    Observable<BaseObjectBean<LoginBean>> login(@Field("username") String username,
+                                                @Field("password") String password);
 
 }

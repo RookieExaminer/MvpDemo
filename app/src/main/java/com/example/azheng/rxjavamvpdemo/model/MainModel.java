@@ -6,7 +6,8 @@ import com.example.azheng.rxjavamvpdemo.bean.LoginBean;
 import com.example.azheng.rxjavamvpdemo.contract.MainContract;
 import com.example.azheng.rxjavamvpdemo.net.RetrofitClient;
 
-import io.reactivex.Flowable;
+import io.reactivex.rxjava3.core.Observable;
+
 
 /**
  * @author azheng
@@ -17,7 +18,10 @@ import io.reactivex.Flowable;
  */
 public class MainModel  implements MainContract.Model {
     @Override
-    public Flowable<BaseObjectBean<LoginBean>> login(String username, String password) {
+    public Observable<BaseObjectBean<LoginBean>> login(String username, String password) {
+
+
+
         return RetrofitClient.getInstance().getApi().login(username,password);
     }
 }
