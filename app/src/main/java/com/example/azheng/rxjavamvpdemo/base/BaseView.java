@@ -1,7 +1,8 @@
 package com.example.azheng.rxjavamvpdemo.base;
 
 
-import com.uber.autodispose.AutoDisposeConverter;
+
+import autodispose2.AutoDisposeConverter;
 
 /**
  * @author azheng
@@ -24,9 +25,9 @@ public interface BaseView {
 
     /**
      * 数据获取失败
-     * @param throwable
+     * @param errMessage
      */
-    void onError(Throwable throwable);
+    void onError(String errMessage);
 
     /**
      * 绑定Android生命周期 防止RxJava内存泄漏
