@@ -33,20 +33,18 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
         if (!isViewAttached()) {
             return;
         }
-        mView.showLoading();
         model.login(username, password)
                 .compose(RxScheduler.Obs_io_main())
                 .to(mView.bindAutoDispose())//解决内存泄漏
                 .subscribe(new Observer<BaseObjectBean<LoginBean>>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        mView.showLoading();
                     }
 
                     @Override
                     public void onNext(@NonNull BaseObjectBean<LoginBean> loginBeanBaseObjectBean) {
                         mView.onSuccess(loginBeanBaseObjectBean);
-                        mView.hideLoading();
                     }
 
                     @Override
@@ -57,7 +55,7 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
 
                     @Override
                     public void onComplete() {
-
+                        mView.hideLoading();
                     }
                 });
 

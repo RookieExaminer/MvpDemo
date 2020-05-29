@@ -4,7 +4,6 @@ import org.reactivestreams.Publisher;
 
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.FlowableTransformer;
 import io.reactivex.rxjava3.core.Observable;
@@ -27,10 +26,10 @@ public class RxScheduler {
      * @param <T> 指定的泛型类型
      * @return FlowableTransformer
      */
-    public static <T> FlowableTransformer<T, T> Flo_io_main() {
+    public static <T> FlowableTransformer< T, T> Flo_io_main() {
         return new FlowableTransformer<T, T>() {
             @Override
-            public Publisher<T> apply(@NonNull Flowable<T> upstream) {
+            public Publisher<T> apply(Flowable<T> upstream) {
                 return upstream.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
             }
@@ -46,7 +45,7 @@ public class RxScheduler {
     public static <T> ObservableTransformer<T, T> Obs_io_main() {
         return new ObservableTransformer<T, T>() {
             @Override
-            public ObservableSource<T> apply(Observable<T> upstream) {
+            public ObservableSource<T> apply( Observable<T> upstream) {
                 return upstream.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
             }

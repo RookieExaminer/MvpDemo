@@ -106,13 +106,13 @@ public class RetrofitClient {
         //初始化一个client,不然retrofit会自己默认添加一个
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .client(getOkHttpClient())
                     //设置网络请求的Url地址
                     .baseUrl(baseUrl)
                     //设置数据解析器
                     .addConverterFactory(GsonConverterFactory.create())
                     //设置网络请求适配器，使其支持RxJava与RxAndroid
                     .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                    .client(getOkHttpClient())
                     .build();
         }
         //创建—— 网络请求接口—— 实例

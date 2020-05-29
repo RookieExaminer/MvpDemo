@@ -19,9 +19,6 @@ import io.reactivex.rxjava3.core.Observable;
 public class MainModel  implements MainContract.Model {
     @Override
     public Observable<BaseObjectBean<LoginBean>> login(String username, String password) {
-
-
-
         return RetrofitClient.getInstance().getApi().login(username,password);
     }
 }
