@@ -83,9 +83,4 @@ public class MainActivity extends BaseMvpActivity<MainPresenter> implements Main
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
 }

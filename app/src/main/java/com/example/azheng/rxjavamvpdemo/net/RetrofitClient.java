@@ -98,7 +98,6 @@ public class RetrofitClient {
 
         }
 
-
         return okHttpClient;
     }
 
@@ -116,7 +115,10 @@ public class RetrofitClient {
                     .build();
         }
         //创建—— 网络请求接口—— 实例
-        apiService = retrofit.create(APIService.class);
+        if (apiService==null){
+            apiService = retrofit.create(APIService.class);
+        }
+
         return apiService;
     }
 
